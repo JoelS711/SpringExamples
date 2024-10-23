@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+
 import model.DataSeason;
 import model.DataSerie;
 import service.ConvertData;
@@ -33,6 +34,7 @@ public class Main {
 			seasons.add(dataSeason);
 		}
 		
-		seasons.forEach(System.out::println);
+		seasons.forEach(t -> t.episodes().forEach(e -> System.out.println(e.title())));
+		
 	}
 }
