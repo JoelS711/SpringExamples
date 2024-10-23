@@ -1,19 +1,12 @@
 package com.joels.screenmatchv2;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import main.Main;
-import model.DataEpisode;
-import model.DataSeason;
-import model.DataSerie;
-import service.ConvertData;
-import service.ServiceAPI;
-
 @SpringBootApplication
 public class Screenmatchv2Application implements CommandLineRunner{
 
