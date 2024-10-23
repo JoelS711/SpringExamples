@@ -1,4 +1,4 @@
-package com.joels.screenmatchv2.service;
+package service;
 
 import java.io.IOException;
 import java.net.URI;
