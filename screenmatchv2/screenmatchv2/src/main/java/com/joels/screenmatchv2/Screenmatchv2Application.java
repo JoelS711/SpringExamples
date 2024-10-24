@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import main.ExampleStream;
 import main.Main;
 @SpringBootApplication
 public class Screenmatchv2Application implements CommandLineRunner{
@@ -17,9 +18,10 @@ public class Screenmatchv2Application implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		
-		Main main = new Main();
-		main.showMenu();
-		
+		//Main main = new Main();
+		//main.showMenu();
+		ExampleStream exampleStream = new ExampleStream();
+		exampleStream.showExample();
 	}
 
 }
