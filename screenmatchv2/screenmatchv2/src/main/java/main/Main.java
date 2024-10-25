@@ -4,7 +4,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -44,34 +47,58 @@ public class Main {
 				.collect(Collectors.toList());
 
 		// Top 5 Episodes
-		System.out.println("Top 5 Episodes");
-		dataEpisode.stream().filter(e -> !e.imdbRating().equalsIgnoreCase("N/A"))
-				.peek(e -> System.out.println("First filter (N/A) " + e))
-				.sorted(Comparator.comparing(DataEpisode::imdbRating).reversed())
-				.peek(e -> System.out.println("Second filter (M>m) " + e))
-				.map(e -> e.title().toUpperCase())
-				.peek(e -> System.out.println("Third filter (m->M) " + e))
-				.limit(5).forEach(System.out::println);
+//		System.out.println("Top 5 Episodes");
+//		dataEpisode.stream().filter(e -> !e.imdbRating().equalsIgnoreCase("N/A"))
+//				.peek(e -> System.out.println("First filter (N/A) " + e))
+//				.sorted(Comparator.comparing(DataEpisode::imdbRating).reversed())
+//				.peek(e -> System.out.println("Second filter (M>m) " + e))
+//				.map(e -> e.title().toUpperCase())
+//				.peek(e -> System.out.println("Third filter (m->M) " + e))
+//				.limit(5).forEach(System.out::println);
 
 		// Converting data of type "Episode"
 		List<Episode> episodes = seasons.stream()
 				.flatMap(t -> t.episodes().stream().map(d -> new Episode(t.number(), d))).collect(Collectors.toList());
 
-		episodes.forEach(System.out::println);
+		//episodes.forEach(System.out::println);
 
 		// Episode search from x year
 
-		System.out.println("Enter the year of the episodes to search");
-		var year = keyboard.nextInt();
-		keyboard.nextLine();
+//		System.out.println("Enter the year of the episodes to search");
+//		var year = keyboard.nextInt();
+//		keyboard.nextLine();
 
-		LocalDate searchDate = LocalDate.of(year, 1, 1);
+//		LocalDate searchDate = LocalDate.of(year, 1, 1);
 
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-		episodes.stream().filter(e -> e.getRelaseDate() != null && e.getRelaseDate().isAfter(searchDate))
-				.forEach(e -> System.out.println("Season " + e.getSeason() + "Episode " + e.getTitle() + "Realase Date "
-						+ e.getRelaseDate().format(dtf)));
+//		episodes.stream().filter(e -> e.getRelaseDate() != null && e.getRelaseDate().isAfter(searchDate))
+//				.forEach(e -> System.out.println("Season " + e.getSeason() + "Episode " + e.getTitle() + "Realase Date "
+//						+ e.getRelaseDate().format(dtf)));
 
+		
+		//Search episodes by title
+//		System.out.println("Enter the title of the episode you want to watch");
+//		var searchTitle = keyboard.nextLine();
+//		Optional <Episode> searchedEpisode = episodes.stream().filter(e -> e.getTitle().toUpperCase().contains(searchTitle.toUpperCase())).findFirst();
+//		
+//		if(searchedEpisode.isPresent()) {
+//			System.out.println("Searched Episode");
+//			System.out.println("The episode found is: "+searchedEpisode.get());
+//		}
+		
+		Map<Integer, Double> seasonRatings = episodes.stream()
+				.filter(e -> e.getRating() > 0.0)
+				.collect(Collectors.groupingBy(Episode::getSeason, Collectors.averagingDouble(Episode::getRating)));
+		
+		System.out.println(seasonRatings);
+		
+		DoubleSummaryStatistics std = episodes.stream().filter(e -> e.getRating() > 0.0).collect(Collectors.summarizingDouble(Episode::getRating));
+		System.out.println("average rating: " + std.getAverage());
+		System.out.println("best rated episode: " + std.getMax());
+		System.out.println("worst rated episode: "+std.getMin());
+		
 	}
+	
+
 }
