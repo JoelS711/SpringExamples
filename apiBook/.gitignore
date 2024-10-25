@@ -1,0 +1,45 @@
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files
+*.jar
+*.war
+*.ear
+
+# Maven specific
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# Eclipse specific
+.classpath
+.project
+.settings/
+
+# VS Code specific
+.vscode/
+
+# IntelliJ specific (optional if you also use IntelliJ)
+.idea/
+*.iml
+*.iws
+out/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Exclude Eclipse's local history and metadata
+.metadata/
