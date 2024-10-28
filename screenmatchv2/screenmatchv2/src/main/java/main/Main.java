@@ -25,6 +25,7 @@ public class Main {
 	private final String URL_BASE = "http://www.omdbapi.com/?t=";
 	private final String API_KEY = "&apikey=9f0dabfa";
 	private ConvertData converter = new ConvertData();
+	private List<DataSerie> dataSerie = new ArrayList<>();
 
 	public void showMenu() {
 		System.out.println("Enter de series name: ");
@@ -34,17 +35,17 @@ public class Main {
 		var data = converter.getData(json, DataSerie.class);
 		// System.out.println(data);
 		// Search data by season
-		List<DataSeason> seasons = new ArrayList<>();
+	/*	List<DataSeason> seasons = new ArrayList<>();
 		for (int i = 1; i <= data.totalSeasons(); i++) {
 			json = serviceApi.getData(URL_BASE + serieName.replace(" ", "+") + "&Season=" + i + API_KEY);
 			var dataSeason = converter.getData(json, DataSeason.class);
 			seasons.add(dataSeason);
-		}
+		}*/
 
 		// seasons.forEach(t -> t.episodes().forEach(e ->
 		// System.out.println(e.title())));
-		List<DataEpisode> dataEpisode = seasons.stream().flatMap(t -> t.episodes().stream())
-				.collect(Collectors.toList());
+	//	List<DataEpisode> dataEpisode = seasons.stream().flatMap(t -> t.episodes().stream())
+	//			.collect(Collectors.toList());
 
 		// Top 5 Episodes
 //		System.out.println("Top 5 Episodes");
@@ -57,8 +58,8 @@ public class Main {
 //				.limit(5).forEach(System.out::println);
 
 		// Converting data of type "Episode"
-		List<Episode> episodes = seasons.stream()
-				.flatMap(t -> t.episodes().stream().map(d -> new Episode(t.number(), d))).collect(Collectors.toList());
+	//	List<Episode> episodes = seasons.stream()
+	//			.flatMap(t -> t.episodes().stream().map(d -> new Episode(t.number(), d))).collect(Collectors.toList());
 
 		//episodes.forEach(System.out::println);
 
@@ -70,7 +71,7 @@ public class Main {
 
 //		LocalDate searchDate = LocalDate.of(year, 1, 1);
 
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	//	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 //		episodes.stream().filter(e -> e.getRelaseDate() != null && e.getRelaseDate().isAfter(searchDate))
 //				.forEach(e -> System.out.println("Season " + e.getSeason() + "Episode " + e.getTitle() + "Realase Date "
@@ -87,7 +88,7 @@ public class Main {
 //			System.out.println("The episode found is: "+searchedEpisode.get());
 //		}
 		
-		Map<Integer, Double> seasonRatings = episodes.stream()
+		/*Map<Integer, Double> seasonRatings = episodes.stream()
 				.filter(e -> e.getRating() > 0.0)
 				.collect(Collectors.groupingBy(Episode::getSeason, Collectors.averagingDouble(Episode::getRating)));
 		
@@ -97,8 +98,10 @@ public class Main {
 		System.out.println("average rating: " + std.getAverage());
 		System.out.println("best rated episode: " + std.getMax());
 		System.out.println("worst rated episode: "+std.getMin());
-		
+		*/
 	}
+	
+	
 	
 
 }
