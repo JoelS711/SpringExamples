@@ -1,17 +1,34 @@
 package model;
 
 import java.util.OptionalDouble;
+import jakarta.persistence.Id;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "series")
 public class Serie {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long Id;
 
+	@Column(unique = true)
 	private String title;
+
 	private Integer totalSeasons;
 	private Double rating;
 	private String poster;
+
+	@Enumerated(EnumType.STRING)
 	private Category genre;
 	private String actors;
 	private String sypnosis;
-	
+
 	public Serie(DataSerie dataSerie) {
 		this.title = dataSerie.title();
 		this.totalSeasons = dataSerie.totalSeasons();
@@ -21,18 +38,12 @@ public class Serie {
 		this.actors = dataSerie.actors();
 		this.sypnosis = dataSerie.sypnosis();
 	}
-	
-	
-	
 
 	@Override
 	public String toString() {
 		return "title=" + title + ", totalSeasons=" + totalSeasons + ", rating=" + rating + ", poster=" + poster
 				+ ", genre=" + genre + ", actors=" + actors + ", sypnosis=" + sypnosis;
 	}
-
-
-
 
 	public String getTitle() {
 		return title;
@@ -89,6 +100,5 @@ public class Serie {
 	public void setSypnosis(String sypnosis) {
 		this.sypnosis = sypnosis;
 	}
-	
-	
+
 }
