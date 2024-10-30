@@ -1,4 +1,4 @@
-package service;
+package com.joels.screenmatchv2.service;
 
 public interface IConvertData {
 

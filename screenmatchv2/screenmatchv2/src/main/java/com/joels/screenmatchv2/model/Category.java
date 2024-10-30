@@ -1,4 +1,4 @@
-package model;
+package com.joels.screenmatchv2.model;
 
 public enum Category {
 

@@ -1,13 +1,13 @@
-package main;
+package com.joels.screenmatchv2.main;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import model.DataSeason;
-import model.DataSerie;
-import service.ConvertData;
-import service.ServiceAPI;
+import com.joels.screenmatchv2.model.DataSeason;
+import com.joels.screenmatchv2.model.DataSerie;
+import com.joels.screenmatchv2.service.ConvertData;
+import com.joels.screenmatchv2.service.ServiceAPI;
 
 public class Principal {
 

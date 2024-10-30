@@ -1,4 +1,4 @@
-package model;
+package com.joels.screenmatchv2.model;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;

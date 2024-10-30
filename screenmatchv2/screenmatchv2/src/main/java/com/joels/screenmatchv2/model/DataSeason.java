@@ -1,4 +1,4 @@
-package model;
+package com.joels.screenmatchv2.model;
 
 import java.util.List;
 

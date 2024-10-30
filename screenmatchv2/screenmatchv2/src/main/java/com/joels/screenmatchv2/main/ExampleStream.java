@@ -1,4 +1,4 @@
-package main;
+package com.joels.screenmatchv2.main;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,4 +1,4 @@
-package main;
+package com.joels.screenmatchv2.main;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -11,12 +11,12 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import model.DataEpisode;
-import model.DataSeason;
-import model.DataSerie;
-import model.Episode;
-import service.ConvertData;
-import service.ServiceAPI;
+import com.joels.screenmatchv2.model.DataEpisode;
+import com.joels.screenmatchv2.model.DataSeason;
+import com.joels.screenmatchv2.model.DataSerie;
+import com.joels.screenmatchv2.model.Episode;
+import com.joels.screenmatchv2.service.ConvertData;
+import com.joels.screenmatchv2.service.ServiceAPI;
 
 public class Main {
 
