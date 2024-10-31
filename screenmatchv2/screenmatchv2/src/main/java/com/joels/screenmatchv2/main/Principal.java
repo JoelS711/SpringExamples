@@ -6,6 +6,8 @@ import java.util.Scanner;
 
 import com.joels.screenmatchv2.model.DataSeason;
 import com.joels.screenmatchv2.model.DataSerie;
+import com.joels.screenmatchv2.model.Serie;
+import com.joels.screenmatchv2.repository.SerieRepository;
 import com.joels.screenmatchv2.service.ConvertData;
 import com.joels.screenmatchv2.service.ServiceAPI;
 
@@ -17,6 +19,14 @@ public class Principal {
 	private final String API_KEY = "&apikey=9f0dabfa";
 	private ConvertData converter = new ConvertData();
 	private List<DataSerie> dataSerie = new ArrayList<>();
+	private SerieRepository repository;
+
+	public Principal(SerieRepository repository) {
+		this.repository = repository;
+	}
+
+
+
 
 	public void showMenu() {
 		var option = -1;
@@ -77,7 +87,9 @@ public class Principal {
 	private void searchSerieWeb() {
 
 		DataSerie data =  getDataSerie();
-		dataSerie.add(data);
+		Serie serie = new Serie(data);
+		repository.save(serie);
+		//dataSerie.add(data);
 		System.out.println(data);
 	}
 	
