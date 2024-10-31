@@ -1,5 +1,6 @@
 package com.joels.screenmatchv2.model;
 
+import java.util.List;
 import java.util.OptionalDouble;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
@@ -9,6 +10,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "series")
@@ -29,6 +31,8 @@ public class Serie {
 	private Category genre;
 	private String actors;
 	private String sypnosis;
+	@Transient
+	private List<Episode> episodes;
 
 	public Serie(DataSerie dataSerie) {
 		this.title = dataSerie.title();
