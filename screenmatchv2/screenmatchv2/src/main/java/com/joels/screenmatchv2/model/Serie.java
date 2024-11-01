@@ -9,6 +9,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
@@ -32,7 +33,7 @@ public class Serie {
 	private Category genre;
 	private String actors;
 	private String sypnosis;
-	@OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Episode> episodes;
 
 	public Serie() {
@@ -52,7 +53,7 @@ public class Serie {
 	@Override
 	public String toString() {
 		return "title=" + title + ", totalSeasons=" + totalSeasons + ", rating=" + rating + ", poster=" + poster
-				+ ", genre=" + genre + ", actors=" + actors + ", sypnosis=" + sypnosis;
+				+ ", genre=" + genre + ", actors=" + actors + ", sypnosis=" + sypnosis+ ", episodes=" + episodes;
 	}
 
 	public String getTitle() {
