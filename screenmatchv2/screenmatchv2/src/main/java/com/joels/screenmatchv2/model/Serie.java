@@ -3,6 +3,8 @@ package com.joels.screenmatchv2.model;
 import java.util.List;
 import java.util.OptionalDouble;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,12 +12,11 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "series")
 public class Serie {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long Id;
@@ -31,8 +32,12 @@ public class Serie {
 	private Category genre;
 	private String actors;
 	private String sypnosis;
-	@Transient
+	@OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
 	private List<Episode> episodes;
+
+	public Serie() {
+
+	}
 
 	public Serie(DataSerie dataSerie) {
 		this.title = dataSerie.title();
@@ -104,6 +109,15 @@ public class Serie {
 
 	public void setSypnosis(String sypnosis) {
 		this.sypnosis = sypnosis;
+	}
+
+	public List<Episode> getEpisodes() {
+		return episodes;
+	}
+
+	public void setEpisodes(List<Episode> episodes) {
+		episodes.forEach(e -> e.setSerie(this));
+		this.episodes = episodes;
 	}
 
 }
