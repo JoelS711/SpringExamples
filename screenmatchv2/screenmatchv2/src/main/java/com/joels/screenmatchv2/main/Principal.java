@@ -22,7 +22,6 @@ public class Principal {
 	private final String URL_BASE = "http://www.omdbapi.com/?t=";
 	private final String API_KEY = "&apikey=9f0dabfa";
 	private ConvertData converter = new ConvertData();
-	private List<DataSerie> dataSerie = new ArrayList<>();
 	private SerieRepository repository;
 	private List<Serie> series;
 
@@ -37,6 +36,8 @@ public class Principal {
 					1. Search serie
 					2. Search episode
 					3. Show searched series
+					4. Search series by title
+					5. Top 5 best series
 
 					0. Exit
 					""";
@@ -53,6 +54,12 @@ public class Principal {
 				break;
 			case 3:
 				showSearchedSeries();
+				break;
+			case 4:
+				searchSerieXTitle();
+				break;
+			case 5:
+				searchTop5Series();
 				break;
 			case 0:
 				System.out.println("Exiting...");
@@ -110,7 +117,26 @@ public class Principal {
 
 	private void showSearchedSeries() {
 		series = repository.findAll();
-		series.stream().sorted(Comparator.comparing(Serie::getGenre)).forEach(System.out::println);
+		series.stream()
+		.sorted(Comparator.comparing(Serie::getGenre))
+		.forEach(System.out::println);
 
+	}
+	
+	private void searchSerieXTitle() {
+		System.out.println("Enter the name of the series you want to watch: ");
+		var nameSerie = keyboard.nextLine();
+		
+		Optional<Serie> searchedSerie = repository.findByTitleContainsIgnoreCase(nameSerie);
+		if(searchedSerie.isPresent()) {
+			System.out.println("The searched series is: "+ searchedSerie.get());
+		}else {
+			System.out.println("Serie not found");
+		}
+	}
+	
+	private void searchTop5Series() {
+		List<Serie> topSeries = repository.findTop5ByOrderByRating();
+		topSeries.forEach(s -> System.out.println("Serie: "+s.getTitle()+" Rating: "+ s.getRating()));
 	}
 }
