@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import com.joels.screenmatchv2.model.Category;
 import com.joels.screenmatchv2.model.DataSeason;
 import com.joels.screenmatchv2.model.DataSerie;
 import com.joels.screenmatchv2.model.Episode;
@@ -24,6 +25,7 @@ public class Principal {
 	private ConvertData converter = new ConvertData();
 	private SerieRepository repository;
 	private List<Serie> series;
+	private Optional<Serie> searchedSerie;
 
 	public Principal(SerieRepository repository) {
 		this.repository = repository;
@@ -38,6 +40,10 @@ public class Principal {
 					3. Show searched series
 					4. Search series by title
 					5. Top 5 best series
+					6. Search series by type
+					7. Search serie by episode and rating
+					8. Search episode x name
+					9. Top 5 Episodes
 
 					0. Exit
 					""";
@@ -61,6 +67,18 @@ public class Principal {
 			case 5:
 				searchTop5Series();
 				break;
+			case 6:
+				searchSeriesByType();
+				break;
+			case 7:
+				searchSeriesBySeasonAndRating();
+				break;
+			case 8:
+				searchEpisodeXName();
+				break;
+			case 9:
+				top5Episodes();
+				break;
 			case 0:
 				System.out.println("Exiting...");
 				break;
@@ -74,7 +92,6 @@ public class Principal {
 		System.out.println("name of the series to search: ");
 		var serieName = keyboard.nextLine();
 		var json = serviceApi.getData(URL_BASE + serieName.replace(" ", "+") + API_KEY);
-		System.out.println(json);
 		DataSerie data = converter.getData(json, DataSerie.class);
 		return data;
 	}
@@ -91,14 +108,14 @@ public class Principal {
 			List<DataSeason> seasons = new ArrayList<>();
 
 			for (int i = 1; i <= foundSerie.getTotalSeasons(); i++) {
-				var json = serviceApi.getData(URL_BASE + foundSerie.getTitle().replace(" ", "+") + API_KEY);
+				var json = serviceApi
+						.getData(URL_BASE + foundSerie.getTitle().replace(" ", "+") + "&season=" + i + API_KEY);
 				DataSeason dataSeason = converter.getData(json, DataSeason.class);
 				seasons.add(dataSeason);
 			}
 			seasons.forEach(System.out::println);
 			List<Episode> episodes = seasons.stream()
-					.flatMap(d -> d.episodes().stream()
-							.map(e -> new Episode(d.number(), e)))
+					.flatMap(d -> d.episodes().stream().map(e -> new Episode(d.number(), e)))
 					.collect(Collectors.toList());
 			foundSerie.setEpisodes(episodes);
 			repository.save(foundSerie);
@@ -117,26 +134,63 @@ public class Principal {
 
 	private void showSearchedSeries() {
 		series = repository.findAll();
-		series.stream()
-		.sorted(Comparator.comparing(Serie::getGenre))
-		.forEach(System.out::println);
+		series.stream().sorted(Comparator.comparing(Serie::getGenre)).forEach(System.out::println);
 
 	}
-	
+
 	private void searchSerieXTitle() {
 		System.out.println("Enter the name of the series you want to watch: ");
 		var nameSerie = keyboard.nextLine();
-		
-		Optional<Serie> searchedSerie = repository.findByTitleContainsIgnoreCase(nameSerie);
-		if(searchedSerie.isPresent()) {
-			System.out.println("The searched series is: "+ searchedSerie.get());
-		}else {
+
+		searchedSerie = repository.findByTitleContainsIgnoreCase(nameSerie);
+		if (searchedSerie.isPresent()) {
+			System.out.println("The searched series is: " + searchedSerie.get());
+		} else {
 			System.out.println("Serie not found");
 		}
 	}
-	
+
 	private void searchTop5Series() {
-		List<Serie> topSeries = repository.findTop5ByOrderByRating();
-		topSeries.forEach(s -> System.out.println("Serie: "+s.getTitle()+" Rating: "+ s.getRating()));
+		List<Serie> topSeries = repository.findTop5ByOrderByRatingDesc();
+		topSeries.forEach(s -> System.out.println("Serie: " + s.getTitle() + " Rating: " + s.getRating()));
+	}
+
+	private void searchSeriesByType() {
+		System.out.println("Enter the type of movie to search: ");
+		var genre = keyboard.nextLine();
+		var category = Category.fromSpanish(genre);
+		List<Serie> serieByKind = repository.findByGenre(category);
+		System.out.println("The kind of serie is: ");
+		serieByKind.forEach(System.out::println);
+	}
+
+	private void searchSeriesBySeasonAndRating() {
+		System.out.println("How many seasons does the series have?: ");
+		var totalSeason = keyboard.nextInt();
+		keyboard.nextLine();
+		System.out.println("Rating from what value?: ");
+		var rating = keyboard.nextDouble();
+		keyboard.nextLine();
+		List<Serie> filterSerie = repository.serieBySeasonAndRating(totalSeason, rating);
+		System.out.println("***Leaked series***");
+		filterSerie.forEach(s -> System.out.println(s.getTitle() + " -rating: " + s.getRating()));
+	}
+
+	private void searchEpisodeXName() {
+		System.out.println("Enter the name of episode to search: ");
+		var nameEpisode = keyboard.nextLine();
+		List<Episode> episodesFound = repository.episodeXName(nameEpisode);
+		episodesFound.forEach(e -> System.out.printf("Serie: %s Season %s Episode %s Rating%s\n", e.getSerie(),
+				e.getSeason(), e.getEpisodeNumber(), e.getRating()));
+	}
+
+	private void top5Episodes() {
+		searchSerieXTitle();
+		if (searchedSerie.isPresent()) {
+			Serie serie = searchedSerie.get();
+			List<Episode> topEpisodes = repository.top5Episodes(serie);
+			topEpisodes.forEach(e -> System.out.printf("Serie: %s Season %s Episode %s Rating %s\n", e.getSerie(),
+					e.getSeason(), e.getTitle(), e.getRating()));
+		}
 	}
 }
