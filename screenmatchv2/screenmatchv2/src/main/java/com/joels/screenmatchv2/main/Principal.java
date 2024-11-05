@@ -128,7 +128,6 @@ public class Principal {
 		DataSerie data = getDataSerie();
 		Serie serie = new Serie(data);
 		repository.save(serie);
-		// dataSerie.add(data);
 		System.out.println(data);
 	}
 
