@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import com.joels.screenmatchv2.dto.EpisodeDTO;
 import com.joels.screenmatchv2.model.Category;
 import com.joels.screenmatchv2.model.Episode;
 import com.joels.screenmatchv2.model.Serie;
@@ -26,4 +27,10 @@ public interface SerieRepository extends JpaRepository<Serie, Long> {
 	
 	@Query("SELECT e FROM Serie s JOIN s.episodes e WHERE s = :serie ORDER BY e.rating DESC LIMIT 5")
 	List<Episode> top5Episodes(Serie serie);
+	
+	@Query("SELECT s FROM Serie s " + "JOIN s.episodes e " + "GROUP BY s " + "ORDER BY MAX(e.relaseDate) DESC LIMIT 5")
+	List<Serie> mostRecentReleases();
+
+	@Query("SELECT e FROM Serie s JOIN s.episodes e WHERE s.id = :id AND e.season = :seasonNumber")
+	List<Episode> getSeasonByNumber(Long id, Long seasonNumber);
 }
