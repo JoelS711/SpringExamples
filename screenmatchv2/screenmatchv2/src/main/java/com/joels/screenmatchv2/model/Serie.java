@@ -32,7 +32,7 @@ public class Serie {
 	@Enumerated(EnumType.STRING)
 	private Category genre;
 	private String actors;
-	private String sypnosis;
+	private String synopsis;
 	@OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Episode> episodes;
 
@@ -47,13 +47,23 @@ public class Serie {
 		this.poster = dataSerie.poster();
 		this.genre = Category.fromString(dataSerie.genre().split(",")[0].trim());
 		this.actors = dataSerie.actors();
-		this.sypnosis = dataSerie.sypnosis();
+		this.synopsis = dataSerie.synopsis();
 	}
 
 	@Override
 	public String toString() {
 		return "title=" + title + ", totalSeasons=" + totalSeasons + ", rating=" + rating + ", poster=" + poster
-				+ ", genre=" + genre + ", actors=" + actors + ", sypnosis=" + sypnosis+ ", episodes=" + episodes;
+				+ ", genre=" + genre + ", actors=" + actors + ", synopsis=" + synopsis+ ", episodes=" + episodes;
+	}
+	
+	
+
+	public Long getId() {
+		return Id;
+	}
+
+	public void setId(Long id) {
+		Id = id;
 	}
 
 	public String getTitle() {
@@ -104,12 +114,12 @@ public class Serie {
 		this.actors = actors;
 	}
 
-	public String getSypnosis() {
-		return sypnosis;
+	public String getSynopsis() {
+		return synopsis;
 	}
 
-	public void setSypnosis(String sypnosis) {
-		this.sypnosis = sypnosis;
+	public void setSynopsis(String synopsis) {
+		this.synopsis = synopsis;
 	}
 
 	public List<Episode> getEpisodes() {
