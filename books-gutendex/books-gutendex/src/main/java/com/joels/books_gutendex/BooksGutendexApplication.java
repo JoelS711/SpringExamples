@@ -1,13 +1,20 @@
 package com.joels.books_gutendex;
 
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
 @SpringBootApplication
-public class BooksGutendexApplication {
+public class BooksGutendexApplication implements CommandLineRunner{
 
 	public static void main(String[] args) {
 		SpringApplication.run(BooksGutendexApplication.class, args);
+	}
+	
+	@Override
+	public void run(String... args) throws Exception {
+		
 	}
 
 }
