@@ -1,5 +1,14 @@
 package com.joels.books_gutendex.model;
 
-public record DataBook() {
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+
+
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public record DataBook(@JsonAlias("title") String title,@JsonAlias("authors") List<AuthorInfo> author,@JsonAlias("languages") List<String> language,@JsonAlias("download_count") Long downloadsCount) {
 
 }
