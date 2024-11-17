@@ -1,8 +1,8 @@
 package com.joels.books_gutendex.model;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -10,7 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
 
@@ -24,7 +23,12 @@ public class Book {
 	
 	private String title;
 	
-	@ManyToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "book_author",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id")
+    )
 	private List<Author> author;
 	private String language;
 	private Long downloads;
@@ -32,11 +36,11 @@ public class Book {
 	public Book() {
 	}
 	
-	public Book(DataBook dataBook) {
+	public Book(DataBook dataBook, List<Author> authors) {
 		this.title = dataBook.title();
-		this.author = dataBook.author();
 		this.language = dataBook.language().get(0);
 		this.downloads = dataBook.downloadsCount();
+		this.author = authors;
 	}
 	
 	public Long getId() {
@@ -54,11 +58,11 @@ public class Book {
 	
 	
 	
-	public List<AuthorInfo> getAuthor() {
+	public List<Author> getAuthor() {
 		return author;
 	}
 
-	public void setAuthor(List<AuthorInfo> author) {
+	public void setAuthor(List<Author> author) {
 		this.author = author;
 	}
 
@@ -79,8 +83,15 @@ public class Book {
 
 	@Override
 	public String toString() {
-		return "Book [title=" + title + ", author=" + author + ", language=" + language + ", downloads=" + downloads
-				+ "]";
+		String authorName = author.stream()
+				.map(Author::getName)
+				.collect(Collectors.joining(", "));
+		return "------------BOOK--------------\n" +
+        "Title: " + title + "\n" +
+        "Author: " + authorName + "\n" +
+        "Downloads: " + downloads + "\n" +
+        "Language: " + language + "\n" +
+        "--------------------------------";
 	}
 	
 	
