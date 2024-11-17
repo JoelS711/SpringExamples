@@ -3,6 +3,7 @@ package com.joels.books_gutendex.main;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -52,7 +53,7 @@ public class Main {
 				searchBook();
 				break;
 			case 2:
-				
+				listRegisteredBooks();
 				break;
 			case 3:
 				
@@ -95,18 +96,43 @@ public class Main {
 	}
 	
 	public void searchBook() {
-		DataBook data = getDataBook();
-		List<Author> authors = data.author().stream()
-				.map(authorInfo -> {
-					return authorRepository.findByName(authorInfo.name())
-							.orElseGet(() -> {
-								Author newAuthor = new Author(authorInfo);
-								authorRepository.save(newAuthor);
-								return newAuthor;
-							});
-				}).toList();
-		Book book = new Book(data, authors);
-		repository.save(book);
-		System.out.println(book.toString());
+		try {
+			DataBook data = getDataBook();
+			List<Author> authors = data.author().stream()
+					.map(authorInfo -> {
+						return authorRepository.findByName(authorInfo.name())
+								.orElseGet(() -> {
+									Author newAuthor = new Author(authorInfo);
+									authorRepository.save(newAuthor);
+									return newAuthor;
+								});
+					}).toList();
+			Book book = new Book(data, authors);
+			repository.save(book);
+			System.out.println(book.toString());
+		}catch (Exception e) {
+	        System.out.println("An error occurred while searching for the book: " + e.getMessage());
+	    }
+		
+	}
+	
+	public void listRegisteredBooks() {
+	    List<Book> books = repository.findAll();
+
+	    if (books.isEmpty()) {
+	        System.out.println("No books found in the database.");
+	    } else {
+	        books.forEach(book -> {
+	            System.out.println("------------BOOK--------------");
+	            System.out.println("Title: " + book.getTitle());
+	            String authors = book.getAuthor().stream()
+	                    .map(Author::getName)
+	                    .collect(Collectors.joining(", "));
+	            System.out.println("Author: " + authors);
+	            System.out.println("Downloads: " + book.getDownloads());
+	            System.out.println("Language: " + book.getLanguage());
+	            System.out.println("--------------------------------");
+	        });
+	    }
 	}
 }
