@@ -1,12 +1,17 @@
 package com.joels.books_gutendex.main;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.joels.books_gutendex.model.Author;
 import com.joels.books_gutendex.model.Book;
+import com.joels.books_gutendex.model.Data;
 import com.joels.books_gutendex.model.DataBook;
+import com.joels.books_gutendex.repository.AuthorRepository;
 import com.joels.books_gutendex.repository.BookRepository;
 import com.joels.books_gutendex.service.ConvertData;
 import com.joels.books_gutendex.service.ServiceAPI;
@@ -18,10 +23,12 @@ public class Main {
 	private ServiceAPI serviceApi = new ServiceAPI();
 	private ConvertData converter = new ConvertData();
 	private BookRepository repository;
+	private AuthorRepository authorRepository;
 	private Scanner keyboard = new Scanner(System.in);
 	
-	public Main(BookRepository repository) {
+	public Main(BookRepository repository, AuthorRepository authorRepo) {
 		this.repository = repository;
+		this.authorRepository = authorRepo;
 	}
 	
 	public void showMenu() {
@@ -69,14 +76,37 @@ public class Main {
 		System.out.println("name of the book to search: ");
 		var bookName = keyboard.nextLine();
 		var json = serviceApi.getData(URL_BASE+"?search="+bookName.replace(" ","+"));
-		DataBook data = converter.getData(json, DataBook.class);
-		return data;
+		Data data;
+		try {
+			  data = converter.getData(json, Data.class);			
+		}catch (Exception e) {
+            throw new RuntimeException("Error parsing JSON", e);
+        }
+		
+		if (data.books() == null || data.books().isEmpty()) {
+	        throw new RuntimeException("No books found in the response");
+	    }
+		
+		var bookSearched = data.books().stream()
+	            .filter(b -> b.title().toUpperCase().contains(bookName.toUpperCase()))
+	            .findFirst()
+	            .orElseThrow(() -> new RuntimeException("Book not found: " + bookName));
+		return bookSearched;
 	}
 	
 	public void searchBook() {
 		DataBook data = getDataBook();
-		Book book = new Book(data);
+		List<Author> authors = data.author().stream()
+				.map(authorInfo -> {
+					return authorRepository.findByName(authorInfo.name())
+							.orElseGet(() -> {
+								Author newAuthor = new Author(authorInfo);
+								authorRepository.save(newAuthor);
+								return newAuthor;
+							});
+				}).toList();
+		Book book = new Book(data, authors);
 		repository.save(book);
-		System.out.println(data);
+		System.out.println(book.toString());
 	}
 }
