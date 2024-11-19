@@ -56,7 +56,7 @@ public class Main {
 				bookService.searchBook(bookName);
 				break;
 			case 2:
-				//listRegisteredBooks();
+				bookService.listRegisteredBooks();
 				break;
 			case 3:
 				
@@ -77,26 +77,4 @@ public class Main {
 	}
 	
 	
-	
-	
-	
-	/*public void listRegisteredBooks() {
-	    List<Book> books = repository.findAll();
-
-	    if (books.isEmpty()) {
-	        System.out.println("No books found in the database.");
-	    } else {
-	        books.forEach(book -> {
-	            System.out.println("------------BOOK--------------");
-	            System.out.println("Title: " + book.getTitle());
-	            String authors = book.getAuthor().stream()
-	                    .map(Author::getName)
-	                    .collect(Collectors.joining(", "));
-	            System.out.println("Author: " + authors);
-	            System.out.println("Downloads: " + book.getDownloads());
-	            System.out.println("Language: " + book.getLanguage());
-	            System.out.println("--------------------------------");
-	        });
-	    }
-	}*/
 }
