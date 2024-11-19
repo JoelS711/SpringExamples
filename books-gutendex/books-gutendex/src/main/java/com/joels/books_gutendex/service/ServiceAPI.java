@@ -6,6 +6,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class ServiceAPI {
 
 public String getData(String url) {
