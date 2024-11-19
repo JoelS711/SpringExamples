@@ -1,6 +1,7 @@
 package com.joels.books_gutendex.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,5 +71,25 @@ public class BookService {
 	        System.out.println("An error occurred while searching for the book: " + e.getMessage());
 	    }
 		
+	}
+	
+	public void listRegisteredBooks() {
+	    List<Book> books = bookRepository.findAll();
+
+	    if (books.isEmpty()) {
+	        System.out.println("No books found in the database.");
+	    } else {
+	        books.forEach(book -> {
+	            System.out.println("------------BOOK--------------");
+	            System.out.println("Title: " + book.getTitle());
+	            String authors = book.getAuthor().stream()
+	                    .map(Author::getName)
+	                    .collect(Collectors.joining(", "));
+	            System.out.println("Author: " + authors);
+	            System.out.println("Downloads: " + book.getDownloads());
+	            System.out.println("Language: " + book.getLanguage());
+	            System.out.println("--------------------------------");
+	        });
+	    }
 	}
 }
