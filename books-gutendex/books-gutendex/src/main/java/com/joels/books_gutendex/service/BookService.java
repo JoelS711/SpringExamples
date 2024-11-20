@@ -29,7 +29,6 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
     
-    
 	private DataBook getDataBook(String bookName) {
 		
 		var json = serviceApi.getData(URL_BASE+"?search="+bookName.replace(" ","+"));
@@ -40,10 +39,6 @@ public class BookService {
             throw new RuntimeException("Error parsing JSON", e);
         }
 		
-		if (data.books() == null || data.books().isEmpty()) {
-	        throw new RuntimeException("No books found in the response");
-	    }
-		
 		var bookSearched = data.books().stream()
 	            .filter(b -> b.title().toUpperCase().contains(bookName.toUpperCase()))
 	            .findFirst()
@@ -51,6 +46,24 @@ public class BookService {
 		return bookSearched;
 	}
 	
+	 private void printBook(Book book) {
+	        System.out.printf(
+	            """
+	            ------------BOOK--------------
+	            Title: %s
+	            Language: %s
+	            Authors: %s
+	            Downloads: %s
+	            --------------------------------
+	            """,
+	            book.getTitle(),
+	            book.getLanguage(),
+	            book.getAuthor().stream()
+	                .map(Author::getName)
+	                .collect(Collectors.joining(", ")),
+	            book.getDownloads()
+	        );
+	    }
 	
 	public void searchBook(String bookName) {
 		try {
@@ -79,17 +92,21 @@ public class BookService {
 	    if (books.isEmpty()) {
 	        System.out.println("No books found in the database.");
 	    } else {
-	        books.forEach(book -> {
-	            System.out.println("------------BOOK--------------");
-	            System.out.println("Title: " + book.getTitle());
-	            String authors = book.getAuthor().stream()
-	                    .map(Author::getName)
-	                    .collect(Collectors.joining(", "));
-	            System.out.println("Author: " + authors);
-	            System.out.println("Downloads: " + book.getDownloads());
-	            System.out.println("Language: " + book.getLanguage());
-	            System.out.println("--------------------------------");
-	        });
+	        books.forEach(this::printBook);
 	    }
+	}
+	
+	public List<Book> getBooksByLanguage(String language) {
+	    return bookRepository.findByLanguage(language);
+	}
+	
+	public void listBooksByLanguage(String language) {
+		var books = getBooksByLanguage(language);
+		if (books.isEmpty()) {
+	        System.out.println("No books found for the specified language: " + language);
+	        return;
+	    }
+		
+		books.forEach(this::printBook);
 	}
 }
