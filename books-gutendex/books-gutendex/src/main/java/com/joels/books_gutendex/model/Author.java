@@ -35,8 +35,15 @@ public class Author {
 	        this.deathYear = authorInfo.deathYear() != null ? Integer.valueOf(authorInfo.deathYear()) : null;
 	    }
 
+	    
+	    
 
-	    public String getName() {
+	    public Long getId() {
+			return id;
+		}
+
+
+		public String getName() {
 	        return name;
 	    }
 
