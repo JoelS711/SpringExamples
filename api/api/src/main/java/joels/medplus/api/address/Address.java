@@ -14,6 +14,14 @@ public class Address {
 	private String street;
 	private String district;
 	private String city;
-	private Integer number;
+	private String number;
 	private String complement;
+
+	public Address(DataAddress dataAddress) {
+		this.street = dataAddress.street();
+		this.district = dataAddress.district();
+		this.city = dataAddress.city();
+		this.number = dataAddress.number();
+		this.complement = dataAddress.complement();
+	}
 }
