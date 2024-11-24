@@ -17,6 +17,8 @@ public class Address {
 	private String number;
 	private String complement;
 
+	public Address() {}
+	
 	public Address(DataAddress dataAddress) {
 		this.street = dataAddress.street();
 		this.district = dataAddress.district();
