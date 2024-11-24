@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS doctors (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    identification VARCHAR(20) NOT NULL UNIQUE,
+    speciality VARCHAR(50) NOT NULL,
+    street VARCHAR(100) NOT NULL,
+    district VARCHAR(50) NOT NULL,
+    city VARCHAR(50) NOT NULL,
+    number VARCHAR(10),
+    complement VARCHAR(100)
+);
