@@ -27,15 +27,23 @@ public class Doctor {
 	private Long id;
 	private String name;
 	private String email;
+	private String phone;
 	private String identification;
 	@Enumerated(EnumType.STRING)
 	private Speciality speciality;
 	@Embedded
 	private Address address;
 	
+	
+	
+	public Doctor() {}
+
+
+
 	public Doctor(DataDoctor dataDoctor) {
 		this.name = dataDoctor.name();
 		this.email = dataDoctor.email();
+		this.phone = dataDoctor.phone();
 		this.identification = dataDoctor.identification();
 		this.speciality = dataDoctor.speciality();
 		this.address = new Address(dataDoctor.address());
