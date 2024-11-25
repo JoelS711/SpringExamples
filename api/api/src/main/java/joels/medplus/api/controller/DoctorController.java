@@ -27,7 +27,7 @@ public class DoctorController {
 	}
 	
 	@GetMapping
-	public List<Doctor> listDoctors(){
-		return doctorRepository.findAll();
+	public List<Doctor> getAllDoctors(){
+	    return doctorRepository.findAll();
 	}
 }
