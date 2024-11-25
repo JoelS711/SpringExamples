@@ -34,11 +34,6 @@ public class Doctor {
 	@Embedded
 	private Address address;
 	
-	
-	
-	public Doctor() {}
-
-
 
 	public Doctor(DataDoctor dataDoctor) {
 		this.name = dataDoctor.name();
