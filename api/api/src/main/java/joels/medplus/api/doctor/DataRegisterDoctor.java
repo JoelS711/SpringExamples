@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import joels.medplus.api.address.DataAddress;
 
-public record DataDoctor(@NotBlank String name,
+public record DataRegisterDoctor(@NotBlank String name,
 		@NotBlank
 		@Email
 		String email,
