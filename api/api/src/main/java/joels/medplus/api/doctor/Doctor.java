@@ -34,8 +34,9 @@ public class Doctor {
 	@Embedded
 	private Address address;
 	
-
-	public Doctor(DataDoctor dataDoctor) {
+	
+	
+	public Doctor(DataRegisterDoctor dataDoctor) {
 		this.name = dataDoctor.name();
 		this.email = dataDoctor.email();
 		this.phone = dataDoctor.phone();
@@ -43,4 +44,5 @@ public class Doctor {
 		this.speciality = dataDoctor.speciality();
 		this.address = new Address(dataDoctor.address());
 	}
+
 }
