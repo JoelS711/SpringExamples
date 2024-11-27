@@ -25,4 +25,14 @@ public class Address {
 		this.number = dataAddress.number();
 		this.complement = dataAddress.complement();
 	}
+
+
+	public Address updateAddressData(DataAddress dataAddress) {
+		this.street = dataAddress.street();
+		this.district = dataAddress.district();
+		this.city = dataAddress.city();
+		this.number = dataAddress.number();
+		this.complement = dataAddress.complement();
+		return this;
+	}
 }
