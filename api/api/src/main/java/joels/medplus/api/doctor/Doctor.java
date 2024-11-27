@@ -29,6 +29,7 @@ public class Doctor {
 	private String email;
 	private String phone;
 	private String identification;
+	private boolean active;
 	@Enumerated(EnumType.STRING)
 	private Speciality speciality;
 	@Embedded
@@ -37,12 +38,35 @@ public class Doctor {
 	
 	
 	public Doctor(DataRegisterDoctor dataDoctor) {
+		this.active = true;
 		this.name = dataDoctor.name();
 		this.email = dataDoctor.email();
 		this.phone = dataDoctor.phone();
 		this.identification = dataDoctor.identification();
 		this.speciality = dataDoctor.speciality();
 		this.address = new Address(dataDoctor.address());
+	}
+
+
+
+	public void updateDoctorData(UpdateDoctorData updateDoctorData) {
+		if(updateDoctorData.name() != null) {
+			this.name = updateDoctorData.name();			
+		}
+		if(updateDoctorData.identification() != null) {
+			this.identification = updateDoctorData.identification();			
+		}
+		if(updateDoctorData.address() != null) {
+			this.address = address.updateAddressData(updateDoctorData.address());			
+		}
+		
+	}
+
+
+
+	public void inactiveDoctor() {
+		this.active=false;
+		
 	}
 
 }
