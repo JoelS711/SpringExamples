@@ -1,6 +1,8 @@
 package joels.medplus.api.controller;
 
 
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,9 +16,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import joels.medplus.api.address.DataAddress;
+import joels.medplus.api.doctor.DataAnswerDoctor;
 import joels.medplus.api.doctor.DataRegisterDoctor;
 import joels.medplus.api.doctor.Doctor;
 import joels.medplus.api.doctor.DoctorListData;
@@ -31,22 +36,30 @@ public class DoctorController {
 	private DoctorRepository doctorRepository;
 	
 	@PostMapping
-	public void registerDoctor(@RequestBody @Valid DataRegisterDoctor dataDoctor) {
-		doctorRepository.save(new Doctor(dataDoctor));
+	public ResponseEntity<DataAnswerDoctor> registerDoctor(@RequestBody @Valid DataRegisterDoctor dataDoctor, UriComponentsBuilder uriComponentsBuilder) {
+		Doctor doctor = doctorRepository.save(new Doctor(dataDoctor));
+		DataAnswerDoctor dataAnswerDoctor = new DataAnswerDoctor(doctor.getId(), doctor.getName(), doctor.getEmail(), doctor.getPhone(),
+				doctor.getIdentification(), new DataAddress(doctor.getAddress().getStreet(),doctor.getAddress().getDistrict(),
+						doctor.getAddress().getCity(),doctor.getAddress().getNumber(),doctor.getAddress().getComplement()));
+		URI url = uriComponentsBuilder.path("/doctor/{id}").buildAndExpand(doctor.getId()).toUri();
+		return ResponseEntity.created(url).body(dataAnswerDoctor);
 	}
 	
 	@GetMapping
-	public Page<DoctorListData> getAllDoctors(@PageableDefault(size=2) Pageable pageable){
+	public ResponseEntity<Page<DoctorListData>> getAllDoctors(@PageableDefault(size=2) Pageable pageable){
 	    //return doctorRepository.findAll(pageable).map(DoctorListData::new);
-	    return doctorRepository.findByActiveTrue(pageable).map(DoctorListData::new);
+	    return ResponseEntity.ok(doctorRepository.findByActiveTrue(pageable).map(DoctorListData::new));
 	    
 	}
 	
 	@PutMapping
 	@Transactional
-	public void updateDoctor(@RequestBody @Valid UpdateDoctorData updateDoctor) {
+	public ResponseEntity updateDoctor(@RequestBody @Valid UpdateDoctorData updateDoctor) {
 		Doctor doctor = doctorRepository.getReferenceById(updateDoctor.id());
 		doctor.updateDoctorData(updateDoctor);
+		return ResponseEntity.ok(new DataAnswerDoctor(doctor.getId(), doctor.getName(), doctor.getEmail(), doctor.getPhone(),
+				doctor.getIdentification(), new DataAddress(doctor.getAddress().getStreet(),doctor.getAddress().getDistrict(),
+						doctor.getAddress().getCity(),doctor.getAddress().getNumber(),doctor.getAddress().getComplement())));
 	}
 	
 	//LOGIC DELETE
@@ -64,4 +77,13 @@ public class DoctorController {
 		doctorRepository.delete(doctor);
 		
 	}*/
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<DataAnswerDoctor> getDoctor(@PathVariable Long id) {
+		Doctor doctor = doctorRepository.getReferenceById(id);
+		var dataDoctor = new DataAnswerDoctor(doctor.getId(), doctor.getName(), doctor.getEmail(), doctor.getPhone(),
+				doctor.getIdentification(), new DataAddress(doctor.getAddress().getStreet(),doctor.getAddress().getDistrict(),
+						doctor.getAddress().getCity(),doctor.getAddress().getNumber(),doctor.getAddress().getComplement()));
+		return ResponseEntity.ok(dataDoctor);
+	}
 }
