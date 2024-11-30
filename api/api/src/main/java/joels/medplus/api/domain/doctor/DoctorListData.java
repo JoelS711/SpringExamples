@@ -1,4 +1,4 @@
-package joels.medplus.api.doctor;
+package joels.medplus.api.domain.doctor;
 
 
 public record DoctorListData(Long id, String name,String email,

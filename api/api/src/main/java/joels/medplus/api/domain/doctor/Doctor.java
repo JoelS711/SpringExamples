@@ -1,4 +1,4 @@
-package joels.medplus.api.doctor;
+package joels.medplus.api.domain.doctor;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -8,7 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import joels.medplus.api.address.Address;
+import joels.medplus.api.domain.address.Address;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

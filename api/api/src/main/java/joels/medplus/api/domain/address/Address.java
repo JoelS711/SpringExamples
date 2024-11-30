@@ -1,4 +1,4 @@
-package joels.medplus.api.address;
+package joels.medplus.api.domain.address;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;

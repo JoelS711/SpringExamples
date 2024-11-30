@@ -1,4 +1,4 @@
-package joels.medplus.api.doctor;
+package joels.medplus.api.domain.doctor;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
