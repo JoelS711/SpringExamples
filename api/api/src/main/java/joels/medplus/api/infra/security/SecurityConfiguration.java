@@ -22,20 +22,17 @@ public class SecurityConfiguration {
 	private SecurityFilter securityFilter;
 	
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
-		
-		//STATELESS es para indicarle a Spring el tipo de sesion
-		/*return httpSecurity.csrf().disable().sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().build();*/
-		
-		return httpSecurity.csrf().disable()
-	            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-	            .and().authorizeRequests()
-	            .requestMatchers(HttpMethod.POST, "/login").permitAll()
-	            .anyRequest().authenticated()
-	            .and()
-	            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-	            .build();
+	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{		
+		return httpSecurity.csrf().disable().sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Tipo de sesion
+                .and().authorizeRequests()
+                .requestMatchers(HttpMethod.POST, "/login")
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
 	}
 	
 	@Bean
