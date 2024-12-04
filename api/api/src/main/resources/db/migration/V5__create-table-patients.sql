@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS patients (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    identification VARCHAR(20) NOT NULL UNIQUE,
+    street VARCHAR(100) NOT NULL,
+    district VARCHAR(50) NOT NULL,
+    city VARCHAR(50) NOT NULL,
+    number VARCHAR(10),
+    complement VARCHAR(100),
+    phone VARCHAR(20) NOT NULL,
+    active TINYINT NOT NULL
+);
