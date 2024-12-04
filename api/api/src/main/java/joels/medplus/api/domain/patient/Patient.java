@@ -30,4 +30,29 @@ public class Patient {
     @Embedded
     private Address address;
     private Boolean active;
+    
+    public Patient(DataRegisterPatient data) {
+        this.active = true;
+        this.name = data.name();
+        this.email = data.email();
+        this.phone = data.phone();
+        this.identification = data.identification();
+        this.address = new Address(data.address());
+    }
+
+    public void updateInformation(UpdatePatientData data) {
+        if (data.name() != null) {
+            this.name = data.name();
+        }
+        if (data.phone() != null) {
+            this.phone = data.phone();
+        }
+        if (data.address() != null) {
+            this.address.updateAddressData(data.address());
+        }
+    }
+
+    public void delete() {
+        this.active = false;
+    }
 }
