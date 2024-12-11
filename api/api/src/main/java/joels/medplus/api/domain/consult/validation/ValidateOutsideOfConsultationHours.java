@@ -2,10 +2,13 @@ package joels.medplus.api.domain.consult.validation;
 
 import java.time.DayOfWeek;
 
+import org.springframework.stereotype.Component;
+
 import joels.medplus.api.domain.ValidaException;
 import joels.medplus.api.domain.consult.DataReserveConsult;
 
-public class ValidationOutsideOfConsultationHours {
+@Component
+public class ValidateOutsideOfConsultationHours implements ValidateOfConsult{
 
 	public void validate(DataReserveConsult data) {
 		var consultationDate = data.date();
