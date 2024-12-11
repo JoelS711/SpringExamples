@@ -3,10 +3,13 @@ package joels.medplus.api.domain.consult.validation;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import org.springframework.stereotype.Component;
+
 import joels.medplus.api.domain.ValidaException;
 import joels.medplus.api.domain.consult.DataReserveConsult;
 
-public class ConsultValidationInAdvance {
+@Component
+public class ValidateConsultInAdvance implements ValidateOfConsult{
 
 	public void validate(DataReserveConsult data) {
 		var dateConsult = data.date();
