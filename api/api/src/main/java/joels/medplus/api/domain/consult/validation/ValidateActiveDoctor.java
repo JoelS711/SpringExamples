@@ -1,5 +1,6 @@
 package joels.medplus.api.domain.consult.validation;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import joels.medplus.api.domain.ValidaException;
@@ -9,6 +10,7 @@ import joels.medplus.api.domain.doctor.DoctorRepository;
 @Component
 public class ValidateActiveDoctor implements ValidateOfConsult{
 
+	@Autowired
 	private DoctorRepository doctorRepository;
 	
 	public void validate(DataReserveConsult data) {
