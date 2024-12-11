@@ -1,11 +1,16 @@
 package joels.medplus.api.domain.consult.validation;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import joels.medplus.api.domain.ValidaException;
 import joels.medplus.api.domain.consult.ConsultRepository;
 import joels.medplus.api.domain.consult.DataReserveConsult;
 
-public class ValidateDoctorWithAnotherConsultationAtTheSameTime {
+@Component
+public class ValidateDoctorWithAnotherConsultationAtTheSameTime implements ValidateOfConsult{
 
+	@Autowired
 	private ConsultRepository consultRepository;
 	
 	public void validate(DataReserveConsult data) {
