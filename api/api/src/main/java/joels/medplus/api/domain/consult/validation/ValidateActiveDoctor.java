@@ -1,10 +1,13 @@
 package joels.medplus.api.domain.consult.validation;
 
+import org.springframework.stereotype.Component;
+
 import joels.medplus.api.domain.ValidaException;
 import joels.medplus.api.domain.consult.DataReserveConsult;
 import joels.medplus.api.domain.doctor.DoctorRepository;
 
-public class ValidateActiveDoctor {
+@Component
+public class ValidateActiveDoctor implements ValidateOfConsult{
 
 	private DoctorRepository doctorRepository;
 	
