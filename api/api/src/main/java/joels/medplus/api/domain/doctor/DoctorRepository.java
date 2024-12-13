@@ -15,24 +15,24 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long>{
 	Page<Doctor> findByActiveTrue(Pageable pageable);
 
 	@Query("""
-			select d from Doctors d
+			select d from Doctor d
 			where
 			d.active = TRUE
 			and
 			d.speciality = :speciality
 			and d.id not in(
-				select c.doctor.id from Consults c
+				select c.doctor.id from Consult c
 				where
 				c.date = :date
 			)
 			order by rand()
 			limit 1 
 			""")
-	Doctor chooseRandomDoctorAvailableOnTheDate(Speciality speciality, @NotNull @Future LocalDateTime date);
+	Doctor chooseRandomDoctorAvailableOnTheDate(Speciality speciality, LocalDateTime date);
 
 	@Query("""
 			select d.active
-			from Doctors d
+			from Doctor d
 			where
 			d.id = :idDoctor
 			""")
