@@ -26,7 +26,7 @@ public class ConsultationReservation {
 	@Autowired
 	private List<ValidateOfConsult> validates;
 	
-	public void reservation(DataReserveConsult data) {
+	public DataDetailConsult reservation(DataReserveConsult data) {
 	
 		if(!patientRepository.existsById(data.idPatient())) {
 			throw new ValidaException("There is no patient with the identification number.");
@@ -38,9 +38,15 @@ public class ConsultationReservation {
 		validates.forEach(v -> v.validate(data));
 		
 		var doctor = chooseDoctor(data);
+		
+		if(doctor == null) {
+			throw new ValidaException("There is no doctor available at this time.");
+		}
+		
 		var patient = patientRepository.findById(data.idPatient()).get();
 		var consult = new Consult(null, doctor, patient, data.date());
 		consultRepository.save(consult);
+		return new DataDetailConsult(consult);
 	}
 
 	private Doctor chooseDoctor(DataReserveConsult data) {
