@@ -18,12 +18,12 @@ import joels.medplus.api.domain.consult.DataReserveConsult;
 public class ConsultController {
 	
 	@Autowired
-	private ConsultationReservation reservation;
+	private ConsultationReservation reserve;
 
 	@PostMapping
 	@Transactional
 	public ResponseEntity reserve(@RequestBody @Valid DataReserveConsult data) {
-		reservation.reservation(data);
-		return ResponseEntity.ok(new DataDetailConsult(null, null, null, null));
+		var detailConsult = reserve.reservation(data);
+		return ResponseEntity.ok(detailConsult);
 	}
 }
