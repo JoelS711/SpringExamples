@@ -29,7 +29,7 @@ public class Doctor {
 	private String email;
 	private String phone;
 	private String identification;
-	private boolean active;
+	private Boolean active;
 	@Enumerated(EnumType.STRING)
 	private Speciality speciality;
 	@Embedded
