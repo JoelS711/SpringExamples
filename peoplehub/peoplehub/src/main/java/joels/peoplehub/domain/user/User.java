@@ -32,85 +32,27 @@ public class User {
 	
 	private String email;
 	
-	private String password;
+	private String passwd;
 	
-	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return List.of(new SimpleGrantedAuthority("ROLE_USER"));
 	}
-	@Override
 	public String getPassword() {
-		return pass;
+		return passwd;
 	}
-	@Override
 	public String getUsername() {
-		return user;
+		return email;
 	}
-	@Override
 	public boolean isEnabled() {
 		return true;
 	}
-	@Override
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
-	@Override
 	public boolean isAccountNonLocked() {
 		return true;
 	}
-	@Override
 	public boolean isAccountNonExpired() {
-		@Override
-		public Collection<? extends GrantedAuthority> getAuthorities() {
-			return List.of(new SimpleGrantedAuthority("ROLE_USER"));
-		}
-		@Override
-		public String getPassword() {
-			return pass;
-		}
-		@Override
-		public String getUsername() {
-			return user;
-		}
-		@Override
-		public boolean isEnabled() {
-			return true;
-		}
-		@Override
-		public boolean isCredentialsNonExpired() {
-			return true;
-		}
-		@Override
-		public boolean isAccountNonLocked() {
-			return true;
-		}
-		@Override
-		public boolean isAccountNonExpired() {
-			@Override
-			public Collection<? extends GrantedAuthority> getAuthorities() {
-				return List.of(new SimpleGrantedAuthority("ROLE_USER"));
-			}
-			@Override
-			public String getPassword() {
-				return pass;
-			}
-			@Override
-			public String getUsername() {
-				return user;
-			}
-			@Override
-			public boolean isEnabled() {
-				return true;
-			}
-			@Override
-			public boolean isCredentialsNonExpired() {
-				return true;
-			}
-			@Override
-			public boolean isAccountNonLocked() {
-				return true;
-			}
-			@Override
-			public boolean isAccountNonExpired() {
-				
+		return true;
+	}
 }
