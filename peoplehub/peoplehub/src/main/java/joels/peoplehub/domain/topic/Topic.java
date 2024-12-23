@@ -1,7 +1,10 @@
 package joels.peoplehub.domain.topic;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -47,8 +50,7 @@ public class Topic {
 	@Enumerated(EnumType.STRING)
 	private Course course;
 
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "answer_id")
-	private Answer answer;
+	@OneToMany(mappedBy = "topic", cascade = CascadeType.ALL,orphanRemoval = true)
+	private List<Answer> answers = new ArrayList<>();
 
 }
