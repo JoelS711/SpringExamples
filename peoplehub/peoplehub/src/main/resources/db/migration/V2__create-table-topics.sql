@@ -7,6 +7,5 @@ CREATE TABLE topics (
     user_id BIGINT NOT NULL,
     course VARCHAR(255) NOT NULL,
     answer_id BIGINT,
-    CONSTRAINT fk_topics_user FOREIGN KEY (user_id) REFERENCES users(id),
-    CONSTRAINT fk_topics_answer FOREIGN KEY (answer_id) REFERENCES answers(id)
+    CONSTRAINT fk_topics_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
