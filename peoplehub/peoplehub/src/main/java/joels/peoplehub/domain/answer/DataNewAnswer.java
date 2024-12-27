@@ -7,4 +7,5 @@ public record DataNewAnswer(Long userId, Long topicId, String message) {
 		answer.getTopic().getId(),
 		answer.getMessage());
 	}
+
 }
