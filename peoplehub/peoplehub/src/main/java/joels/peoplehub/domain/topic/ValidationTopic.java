@@ -17,4 +17,11 @@ public class ValidationTopic {
 	
 	@Autowired
 	private AnswerRepository answerRespository;
+	
+	public void postTopic(DataNewTopic dataNewTopic) throws Exception {
+		if(!userRespository.existsById(dataNewTopic.userId())) {
+			throw new Exception("The user id doesn't exist");
+		}
+	}
+	
 }
