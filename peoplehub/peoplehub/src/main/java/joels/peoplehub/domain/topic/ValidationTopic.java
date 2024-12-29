@@ -5,23 +5,34 @@ import org.springframework.stereotype.Service;
 
 import joels.peoplehub.domain.answer.AnswerRepository;
 import joels.peoplehub.domain.user.UserRepository;
+import joels.peoplehub.infra.error.ValidaException;
 
 @Service
 public class ValidationTopic {
 
 	@Autowired
-	private UserRepository userRespository;
+	private UserRepository userRepository;
 	
 	@Autowired
-	private TopicRepository topicRespository;
+	private TopicRepository topicRepository;
 	
 	@Autowired
-	private AnswerRepository answerRespository;
+	private AnswerRepository answerRepository;
 	
-	public void postTopic(DataNewTopic dataNewTopic) throws Exception {
-		if(!userRespository.existsById(dataNewTopic.userId())) {
-			throw new Exception("The user id doesn't exist");
+	public void postTopic(DataNewTopic dataNewTopic) {
+		if(!userRepository.existsById(dataNewTopic.userId())) {
+			throw new ValidaException("The user id doesn't exist");
 		}
+		
+		if(!topicRepository.existsByTitle(dataNewTopic.title())) {
+			throw new ValidaException("The user id doesn't exist");
+		}
+		
+		var topic = new Topic(dataNewTopic, userRepository);
+		
+		topicRepository.save(topic);
 	}
+	
+	
 	
 }
