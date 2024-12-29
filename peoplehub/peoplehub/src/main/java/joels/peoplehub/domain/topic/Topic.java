@@ -18,6 +18,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import joels.peoplehub.domain.answer.Answer;
 import joels.peoplehub.domain.user.User;
+import joels.peoplehub.domain.user.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -52,5 +53,16 @@ public class Topic {
 
 	@OneToMany(mappedBy = "topic", cascade = CascadeType.ALL,orphanRemoval = true)
 	private List<Answer> answers = new ArrayList<>();
+	
+	public Topic(DataNewTopic data, UserRepository userRepository) {
+        this.title = data.title();
+        this.message = data.message();
+        this.creationDate = LocalDateTime.now();
+        this.status = true;
+        this.user = userRepository.findById(data.userId())
+                .orElseThrow(() -> new IllegalArgumentException("User not fount with Id: " + data.userId()));
+
+        this.course = data.course();
+    }
 
 }
