@@ -16,6 +16,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import joels.peoplehub.domain.answer.Answer;
 import joels.peoplehub.domain.user.User;
 import joels.peoplehub.domain.user.UserRepository;
@@ -64,5 +65,15 @@ public class Topic {
 
         this.course = data.course();
     }
+
+	public void update(@Valid DataUpdateTopic dataUpdateTopic) {
+		if(dataUpdateTopic.title() != null) {
+			this.title = dataUpdateTopic.title();
+		}
+		if(dataUpdateTopic.message() != null) {
+			this.message = dataUpdateTopic.message();
+		}
+		
+	}
 
 }
