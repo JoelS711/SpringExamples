@@ -8,4 +8,6 @@ public interface TopicRepository extends JpaRepository<Topic, Long>{
 
 	boolean existsByTitle(@NotBlank String title);
 
+	boolean existsByMessage(String message);
+
 }
