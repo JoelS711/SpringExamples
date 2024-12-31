@@ -34,5 +34,39 @@ public class ValidationTopic {
 	}
 	
 	
+	public void updateTopic(Long id, DataUpdateTopic dataUpdateTopic) {
+		if(!topicRepository.existsById(id)) {
+			throw new ValidaException("The Id topic doesn't exist");
+		}
+		
+		if(!userRepository.existsById(dataUpdateTopic.userId())) {
+			throw new ValidaException("The Id user doesn't exist");
+		}
+		
+		if(!topicRepository.getReferenceById(id).getUser().getId().equals(dataUpdateTopic.userId())) {
+			throw new ValidaException("Your user does not have authorization to modify this topic");
+		}
+		
+		if(topicRepository.existsByTitle(dataUpdateTopic.title())) {
+			if(topicRepository.getReferenceById(id).getTitle().equals(dataUpdateTopic.title())) {
+				throw new ValidaException("The updated title is the same as the original title.");
+			} else {
+				throw new ValidaException("Topic with the entered title already exists");
+			}
+		}
+		
+		if(topicRepository.existsByMessage(dataUpdateTopic.message())) {
+			if(topicRepository.getReferenceById(id).getMessage().equals(dataUpdateTopic.message())) {
+				throw new ValidaException("The updated message is the same as the original message.");
+			} else {
+				throw new ValidaException("Topic with the entered message already exists");
+			}
+		}
+		
+		Topic topic = topicRepository.getReferenceById(id);
+		topic.update(dataUpdateTopic);
+	}
+	
+	
 	
 }
