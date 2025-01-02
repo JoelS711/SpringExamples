@@ -1,5 +1,7 @@
 package joels.peoplehub.domain.topic;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +21,7 @@ public class ValidationTopic {
 	@Autowired
 	private AnswerRepository answerRepository;
 	
-	public void postTopic(DataNewTopic dataNewTopic) {
+	public DataNewTopic postTopic(DataNewTopic dataNewTopic) {
 		if(!userRepository.existsById(dataNewTopic.userId())) {
 			throw new ValidaException("The user id doesn't exist");
 		}
@@ -28,9 +30,18 @@ public class ValidationTopic {
 			throw new ValidaException("The user id doesn't exist");
 		}
 		
-		var topic = new Topic(dataNewTopic, userRepository);
+		var user = userRepository.findById(dataNewTopic.userId()).orElseThrow(() -> new ValidaException("User not found"));
+		
+		var topic = new Topic(dataNewTopic.title(),
+                dataNewTopic.message(),
+                LocalDateTime.now(),
+                true,
+                user,
+                dataNewTopic.course());
 		
 		topicRepository.save(topic);
+	    return new DataNewTopic(topic);
+
 	}
 	
 	
