@@ -55,16 +55,14 @@ public class Topic {
 	@OneToMany(mappedBy = "topic", cascade = CascadeType.ALL,orphanRemoval = true)
 	private List<Answer> answers = new ArrayList<>();
 	
-	public Topic(DataNewTopic data, UserRepository userRepository) {
-        this.title = data.title();
-        this.message = data.message();
-        this.creationDate = LocalDateTime.now();
-        this.status = true;
-        this.user = userRepository.findById(data.userId())
-                .orElseThrow(() -> new IllegalArgumentException("User not fount with Id: " + data.userId()));
-
-        this.course = data.course();
-    }
+	public Topic(String title, String message, LocalDateTime creationDate, Boolean status, User user, Course course) {
+	    this.title = title;
+	    this.message = message;
+	    this.creationDate = creationDate;
+	    this.status = status;
+	    this.user = user;
+	    this.course = course;
+	}
 
 	public void update(@Valid DataUpdateTopic dataUpdateTopic) {
 		if(dataUpdateTopic.title() != null) {
