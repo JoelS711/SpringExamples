@@ -1,5 +1,7 @@
 package joels.peoplehub.domain.topic;
 
-public record DataDeleteTopic() {
+import jakarta.validation.constraints.NotNull;
+
+public record DataDeleteTopic(@NotNull Long topicId) {
 
 }
