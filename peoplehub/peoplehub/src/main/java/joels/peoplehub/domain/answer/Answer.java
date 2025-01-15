@@ -18,8 +18,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Table(name="answers")
-@Entity(name="Answer")
+@Table(name = "answers")
+@Entity(name = "Answer")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,20 +29,28 @@ public class Answer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String message;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "topic_id")
 	private Topic topic;
-	
+
 	private LocalDateTime creationDate;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User user;
-	
+
 	private Boolean solution;
-	
-	
+
+	public Answer(Topic topicId, String message, LocalDateTime now, boolean b, User user) {
+		this.topic = topicId;
+		this.message = message;
+		this.creationDate = now;
+		this.solution = b;
+		this.user = user;
+		
+		
+	}
 }
